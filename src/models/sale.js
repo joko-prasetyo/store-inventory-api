@@ -63,6 +63,13 @@ saleSchema.statics.updateQuantityAndSave = async function(sale, res, before) {
     }
 } 
 
+saleSchema.methods.toJSON = function () {
+    const item = this
+    const itemObject = item.toObject()
+    delete itemObject.__v;
+    return itemObject
+}
+
 const Sale = mongoose.model("Sale", saleSchema);
 
 module.exports = Sale;

@@ -24,6 +24,13 @@ brandSchema.pre('save', async function (next) {
     next()
 })
 
+brandSchema.methods.toJSON = function () {
+    const item = this
+    const itemObject = item.toObject()
+    delete itemObject.__v;
+    return itemObject
+}
+
 const Brand = mongoose.model("Brand", brandSchema);
 
 module.exports = Brand;

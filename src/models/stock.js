@@ -19,6 +19,13 @@ const stockSchema = new mongoose.Schema({
     timestamps: false
 });
 
+stockSchema.methods.toJSON = function () {
+    const item = this
+    const itemObject = item.toObject()
+    delete itemObject.__v;
+    return itemObject
+}
+
 const Stock = mongoose.model("Stock", stockSchema);
 
 module.exports = Stock;

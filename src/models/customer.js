@@ -28,6 +28,13 @@ customerSchema.virtual("customer", {
     foreignField: 'customer_id'
 })
 
+customerSchema.methods.toJSON = function () {
+    const item = this
+    const itemObject = item.toObject()
+    delete itemObject.__v;
+    return itemObject
+}
+
 const Customer = mongoose.model("Customer", customerSchema);
 
 module.exports = Customer;

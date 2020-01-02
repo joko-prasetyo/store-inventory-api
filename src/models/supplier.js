@@ -23,6 +23,13 @@ supplierSchema.virtual("supplier", {
     foreignField: 'supplier_id'
 })
 
+supplierSchema.methods.toJSON = function () {
+    const item = this
+    const itemObject = item.toObject()
+    delete itemObject.__v;
+    return itemObject
+}
+
 const Supplier = mongoose.model("Supplier", supplierSchema);
 
 module.exports = Supplier;

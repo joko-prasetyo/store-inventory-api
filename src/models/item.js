@@ -39,6 +39,7 @@ itemSchema.virtual("item", {
     localField: '_id',
     foreignField: 'item_id'
 })
+
 itemSchema.statics.deleteRelatedStock = async function(item_id) {
     await Stock.findOneAndDelete({ item_id })
 }
@@ -47,6 +48,7 @@ itemSchema.methods.toJSON = function () {
     const item = this
     const itemObject = item.toObject()
     delete itemObject.image
+    delete itemObject.__v;
     return itemObject
 }
 
