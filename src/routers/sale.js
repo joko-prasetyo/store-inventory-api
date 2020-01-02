@@ -1,10 +1,14 @@
 const express = require("express");
 const router = new express.Router();
 const Sale = require("../models/sale");
+const Item = require("../models/item");
 
 router.post("/sales", async (req, res) => {
-    const sale = new Sale(req.body);
+    let sale = new Sale(req.body);
     try {
+        const item = await Item.findById(req.body.item_id);
+        if (!item) return res.status(400).send({ error: "Item is not exists, please create a new one" });
+        sale.item_id = item;       
         await Sale.checkQuantityAndSave(sale, res);
         res.status(201).send(sale);
     } catch(e) {
@@ -13,7 +17,7 @@ router.post("/sales", async (req, res) => {
 })
 
 router.get("/sales", async (req, res) => {
-    let sales = await Sale.find({}).populate("customer_id").populate("item_id")
+    let sales = await Sale.find({}).populate("customer_id");
     // sales.filter(sale => sale.customer_id != null && sale.item_id != null)
     try {
         if (!sales.length) throw new Error();

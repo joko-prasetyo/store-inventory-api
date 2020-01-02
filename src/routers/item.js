@@ -69,7 +69,19 @@ router.delete("/items/:id/image", async (req, res) => {
 })
 
 router.get("/items", async (req, res) => {
-    let items = await Item.find({}).populate('brand_id').populate('supplier_id');
+    const options_1 = {
+        path: 'brand_id',
+        options: {
+          retainNullValues: false
+        }
+    };
+    const options_2 = {
+        path: 'supplier_id',
+        options: {
+          retainNullValues: false 
+        }
+    };      
+    let items = await Item.find({}).populate(options_1).populate(options_2);
     try {
         res.status(200).send(items);
     } catch(e) {
